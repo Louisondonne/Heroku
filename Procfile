@@ -1,1 +1,1 @@
-web: gunicorn projectHeroku.wsgi --chdir project
+web: gunicorn projectHeroku.wsgi

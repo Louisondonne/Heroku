@@ -1,1 +1,1 @@
-web: gunicorn projectHeroku.wsgi
+web: gunicorn appHeroku.wsgi

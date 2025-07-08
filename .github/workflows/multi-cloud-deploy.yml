@@ -1,5 +1,3 @@
-#  config YML
-
 name: Multi-Cloud Deploy
 
 on:
@@ -29,6 +27,9 @@ jobs:
           docker tag myapp:latest registry.heroku.com/test-louison-app/web
           # Replace 'test-louison-app' with your actual Heroku app name
           docker push registry.heroku.com/test-louison-app/web
+
+      - name: Install Heroku CLI
+        run: curl https://cli-assets.heroku.com/install.sh | sh
 
       - name: Release on Heroku
         run: heroku container:release web --app test-louison-app

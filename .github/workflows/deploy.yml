@@ -1,0 +1,72 @@
+#  config YML
+
+name: Multi-Cloud Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Docker Hub
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Docker image
+        run: docker build -t myapp:latest .
+
+      # - name: Push to Docker Hub
+      #   run: |
+      #     docker tag myapp:latest mydockerhubuser/myapp:latest
+      #     docker push mydockerhubuser/myapp:latest
+
+      # Heroku
+      - name: Log in to Heroku Container Registry
+        run: echo "${{ secrets.HEROKU_API_KEY }}" | docker login --username=_ --password-stdin registry.heroku.com
+      - name: Push to Heroku
+        run: |
+          docker tag myapp:latest registry.heroku.com/my-heroku-app/web
+          docker push registry.heroku.com/my-heroku-app/web
+
+      - name: Release on Heroku
+        run: heroku container:release web --app my-heroku-app
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+      # AWS ECR
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v2
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: eu-west-1
+
+      # - name: Log in to Amazon ECR
+      #   run: |
+      #     aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}
+
+      # - name: Push to Amazon ECR
+      #   run: |
+      #     docker tag myapp:latest ${{ secrets.AWS_ECR_REGISTRY }}/myapp:latest
+      #     docker push ${{ secrets.AWS_ECR_REGISTRY }}/myapp:latest
+
+      # # Azure ACR
+      # - name: Log in to Azure
+      #   uses: azure/login@v1
+      #   with:
+      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # - name: Log in to Azure Container Registry
+      #   run: az acr login --name ${{ secrets.AZURE_ACR_NAME }}
+
+      # - name: Push to Azure ACR
+      #   run: |
+      #     docker tag myapp:latest ${{ secrets.AZURE_ACR_NAME }}.azurecr.io/myapp:latest
+      #     docker push ${{ secrets.AZURE_ACR_NAME }}.azurecr.io/myapp:latest
+
+

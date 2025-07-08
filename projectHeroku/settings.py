@@ -89,7 +89,7 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
+ 
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -134,8 +134,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'votre_nom_cloud',
-    'API_KEY': 'votre_clé_api',
-    'API_SECRET': 'votre_secret_api'
+    'CLOUD_NAME': 'nom_cloud',
+    'API_KEY': 'clé_api',
+    'API_SECRET': 'secret_api'
 }
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

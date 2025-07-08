@@ -18,25 +18,22 @@ jobs:
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build Docker image
-        run: docker build -t appHeroku:latest .
-
-      # - name: Push to Docker Hub
-      #   run: |
-      #     docker tag appHeroku:latest mydockerhubuser/appHeroku:latest
-      #     docker push mydockerhubuser/appHeroku:latest
+        run: docker build -t myapp:latest .
 
       # Heroku
       - name: Log in to Heroku Container Registry
         run: echo "${{ secrets.HEROKU_API_KEY }}" | docker login --username=_ --password-stdin registry.heroku.com
+
       - name: Push to Heroku
         run: |
-          docker tag appHeroku:latest registry.heroku.com/my-heroku-app/web
-          docker push registry.heroku.com/my-heroku-app/web
+          docker tag myapp:latest registry.heroku.com/appHeroku/web
+          docker push registry.heroku.com/appHeroku/web
 
       - name: Release on Heroku
-        run: heroku container:release web --app my-heroku-app
+        run: heroku container:release web --app appHeroku
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
 
       # AWS ECR
       # - name: Configure AWS credentials

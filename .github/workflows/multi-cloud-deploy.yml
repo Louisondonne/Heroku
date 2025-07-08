@@ -26,7 +26,8 @@ jobs:
 
       - name: Push to Heroku
         run: |
-          docker tag myapp:latest registry.heroku.com/test-louison-app
+          docker tag myapp:latest registry.heroku.com/test-louison-app/web
+          # Replace 'test-louison-app' with your actual Heroku app name
           docker push registry.heroku.com/test-louison-app/web
 
       - name: Release on Heroku

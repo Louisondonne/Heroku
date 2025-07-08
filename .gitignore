@@ -4,4 +4,4 @@ __pycache__
 env
 staticfiles
 *.log
-/projectHeroku/*
+/projectHeroku/node_modules/*
